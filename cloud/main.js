@@ -20,10 +20,20 @@ Parse.Cloud.define("getEvents", function(request, response) {
             cnt--;
             console.log(result);
             if (cnt <= 0) {
-              console.log("SUCCESS <--------------");
-              console.log(results);
-              console.log("---------------------->");
-              response.success(results);
+              var simpleResult = [], tmp;
+              for (var j = 0; j < results.length; ++j) {
+                tmp = {
+                  "description": results[j].get("description"),
+                  "longDescription": results[j].get("longDescription"),
+                  "place": results[j].get("place"),
+                  "date": results[j].get("date"),
+                  "endDate": results[j].get("endDate"),
+                  "host": results[j].get("host"),
+                  "members": results[j].get("members")
+                };
+                simpleResult[j] = tmp;
+              }
+              response.success(simpleResult);
             }
           },
           error: function(error) {

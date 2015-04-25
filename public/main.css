@@ -27,8 +27,12 @@ label {
   color: #FFF;
 }
 
-.event-row div {
+.event-col {
   color: #FFF;
   border-bottom: solid 1px #2a2b2d;
   margin-bottom: 10px;
+}
+
+.event-row {
+  margin-bottom: 5px;
 }
