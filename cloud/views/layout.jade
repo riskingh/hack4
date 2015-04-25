@@ -48,7 +48,7 @@ html
     block title
       title go a movie
   body
-    nav(class="navbar navbar-inverse navbar-fixed-top")
+    nav(id="mainNavbar", class="navbar navbar-inverse navbar-fixed-top")
       div(class="container-fluid")
         div(class="navbar-header")
           button(type="button", class="navbar-toggle collapsed", data-toggle="collapse", data-target="#navbar", aria-expanded="false", aria-controls="navbar")
@@ -56,14 +56,14 @@ html
             span(class="icon-bar")
             span(class="icon-bar")
             span(class="icon-bar")
-          a(class="navbar-brand", href="/") go a movie
+          a(class="navbar-brand", href="/") GO A MOVIE
         div(id="navbar", class="navbar-collapse collapse")
           ul(class="nav navbar-nav navbar-right")
             li(id="li_add_event", class="hidden")
-              a(href="/add_event") Add event 
+              a(href="/add_event") ADD EVENT
             li(id="li_log_in")
-              a(href="/log_in") Log in
+              a(href="/log_in") LOG IN
             li(id="li_log_out", class="hidden")
-              a(href="") Log out
+              a(href="") LOG OUT
 
     block content

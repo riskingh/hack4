@@ -17,6 +17,8 @@ app.get('/', function(req, res) {
 app.get("/events", function(req, res) {
   Parse.Cloud.run("getEvents", {count: 10}, {
     success: function(result) {
+      console.log("WTF?");
+      console.log(result);
       res.render("events", {events: JSON.stringify(result)});
     },
     error: function(error) {

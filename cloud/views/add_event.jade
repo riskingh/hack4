@@ -18,11 +18,11 @@ block script
         var currentEvent = new CEvent();
         currentEvent.set("host", user);
         console.log($("#datetimepicker1").data().date);
-        console.log(new Date($("#datetimepicker1").data().date));
-        currentEvent.set("date", new Date($("#datetimepicker1").data().date));
+        console.log(new Date(Date($("#datetimepicker1").data().date.toString())));
+        currentEvent.set("date", new Date(Date($("#datetimepicker1").data().date.toString())));
         currentEvent.set("description", $("#shortDescription").val());
         currentEvent.set("place", $("#place").val());
-        //currentEvent.relation("members").add(user);
+        currentEvent.relation("members").add(user);
         console.log($("#datetimepicker1").data().date);
         console.log(currentEvent);
         currentEvent.save();
@@ -35,29 +35,29 @@ block content
   div(class="row")
     div(class="col-sm-offset-2 col-sm-8")
       form(id="eventEditor", class="form-horizontal")
-        label(for="shortDescription", class="col-sm-3 control-label") short description
+        label(for="shortDescription", class="col-sm-3 control-label") SHORT DESCRIPTION
         div(class="form-group"): div(class="col-sm-7 col-xs-12")
           input(type="text", class="form-control", id="shortDescription")
 
-        label(for="shortDescription", class="col-sm-3 control-label") long description
+        label(for="shortDescription", class="col-sm-3 control-label") LONG DESCRIPTION
         div(class="form-group"): div(class="col-sm-7 col-xs-12")
           textarea(class="form-control", rows="3", id="longDescription")
 
-        label(for="datetimepicker1", class="col-sm-3 control-label") date and time of start
+        label(for="datetimepicker1", class="col-sm-3 control-label") DATE AND TIME OF START
         div(class="form-group"): div(class="col-sm-7 col-xs-12")
           div(class="input-group date datetimepicker", id="datetimepicker1")
             input(type="text", class="form-control")
             span(class="input-group-addon")
               span(class="glyphicon glyphicon-calendar")
 
-        label(for="datetimepicker2", class="col-sm-3 control-label") date and time of end
+        label(for="datetimepicker2", class="col-sm-3 control-label") DATE AND TIME OF END
         div(class="form-group"): div(class="col-sm-7 col-xs-12")
           div(class="input-group date datetimepicker", id="datetimepicker2)
             input(type="text", class="form-control")
             span(class="input-group-addon")
               span(class="glyphicon glyphicon-calendar")
 
-        label(for="place", class="col-sm-3 control-label") place
+        label(for="place", class="col-sm-3 control-label") PLACE
         div(class="form-group"): div(class="col-sm-7 col-xs-12")
             input(type="text", class="form-control", id="place")
 
@@ -65,5 +65,5 @@ block content
         div(class="form-group")
           div(class="col-sm-7 col-xs-12")
             div(class="btn-group")
-              button(id="submitButton", type="submit", class="btn btn-default") Submit
+              button(id="submitButton", type="submit", class="btn btn-default") SUBMIT
       
