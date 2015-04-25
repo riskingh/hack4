@@ -26,10 +26,14 @@ html
       Parse.$ = jQuery;
       Parse.initialize("pUxJpgAS6ezU8fhWR7ILiJEWu0DebRd1JrHuIlxb", "XurS1wKCPqFs3BpW5bUBb8pIISOSclaIeiR0TE1w");
       $(document).ready(function () {
+        var hiddenForAnonymous = ["li_add_event", "li_log_out"];
+        var hiddenForAuthorized = ["li_log_in"];
         user = Parse.User.current();
         if (user !== null) {
-          $("#li_log_in").addClass("hidden");
-          $("#li_log_out").removeClass("hidden");
+          for (var i = 0; i < hiddenForAnonymous.length; ++i)
+            $("#" + hiddenForAnonymous[i]).removeClass("hidden");
+          for (var i = 0; i < hiddenForAuthorized.length; ++i)
+            $("#" + hiddenForAuthorized[i]).addClass("hidden");
         }
 
         $("#li_log_out a").click(function() {
@@ -55,15 +59,11 @@ html
           a(class="navbar-brand", href="/") go a movie
         div(id="navbar", class="navbar-collapse collapse")
           ul(class="nav navbar-nav navbar-right")
-            li
-              a(href="") Dashboard
-            li
-              a(href="") Settings
+            li(id="li_add_event", class="hidden")
+              a(href="/add_event") Add event 
             li(id="li_log_in")
               a(href="/log_in") Log in
             li(id="li_log_out", class="hidden")
               a(href="") Log out
-          form(class="navbar-form navbar-right")
-            input(type="text", class="form-control", placeholder="Search...")
 
     block content

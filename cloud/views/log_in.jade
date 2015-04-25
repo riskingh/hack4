@@ -13,7 +13,7 @@ block script
         Parse.User.logIn(username, password, {
           success: function(user) {
             console.log("Success", user);
-            window.location.href = "/";
+            window.location.href = "/events";
           },
           error: function(user, error) {
             console.log("Error", user, error);
