@@ -20,12 +20,15 @@ block script
         console.log($("#datetimepicker1").data().date);
         console.log(new Date(Date($("#datetimepicker1").data().date.toString())));
         currentEvent.set("date", new Date(Date($("#datetimepicker1").data().date.toString())));
+        currentEvent.set("endDate", new Date(Date($("#datetimepicker2").data().date.toString())));
         currentEvent.set("description", $("#shortDescription").val());
+        currentEvent.set("longDescription", $("#longDescription").val());
         currentEvent.set("place", $("#place").val());
         currentEvent.relation("members").add(user);
         console.log($("#datetimepicker1").data().date);
         console.log(currentEvent);
         currentEvent.save();
+        window.location.href="/events"
       });
 
     });
@@ -52,7 +55,7 @@ block content
 
         label(for="datetimepicker2", class="col-sm-3 control-label") DATE AND TIME OF END
         div(class="form-group"): div(class="col-sm-7 col-xs-12")
-          div(class="input-group date datetimepicker", id="datetimepicker2)
+          div(class="input-group date datetimepicker", id="datetimepicker2")
             input(type="text", class="form-control")
             span(class="input-group-addon")
               span(class="glyphicon glyphicon-calendar")
