@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "_default": {
+            "link": "hack4"
+        }, 
+        "hack4": {
+            "applicationId": "pUxJpgAS6ezU8fhWR7ILiJEWu0DebRd1JrHuIlxb", 
+            "masterKey": "SKe1bF8MwNY1QkZ6SlKcyIR7cDfaSiZkP53WYqMV"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.4.2"
+    }
+}

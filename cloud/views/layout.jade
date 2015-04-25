@@ -1,0 +1,61 @@
+doctype html
+html
+  head
+    //- Parse
+    script(type="text/javascript", src="http://www.parsecdn.com/js/parse-1.2.13.min.js")
+
+    //- Bootstrap
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
+    script(type="text/javascript", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
+
+    //- jQuery
+    script(type="text/javascript", src="http://code.jquery.com/jquery-2.1.3.min.js")
+
+    //- my CSS
+    link(rel="stylesheet", href="main.css")
+
+    script(type="text/javascript").
+      Parse.$ = jQuery;
+      Parse.initialize("pUxJpgAS6ezU8fhWR7ILiJEWu0DebRd1JrHuIlxb", "XurS1wKCPqFs3BpW5bUBb8pIISOSclaIeiR0TE1w");
+      $(document).ready(function () {
+        user = Parse.User.current();
+        if (user !== null) {
+          $("#li_log_in").addClass("hidden");
+          $("#li_log_out").removeClass("hidden");
+        }
+
+        $("#li_log_out a").click(function() {
+          Parse.User.logOut();
+          user = null;
+          location.reload();
+        });
+      });
+
+    block script
+
+    block title
+      title go a movie
+  body
+    nav(class="navbar navbar-inverse navbar-fixed-top")
+      div(class="container-fluid")
+        div(class="navbar-header")
+          button(type="button", class="navbar-toggle collapsed", data-toggle="collapse", data-target="#navbar", aria-expanded="false", aria-controls="navbar")
+            span(class="sr-only") Toggle navigation
+            span(class="icon-bar")
+            span(class="icon-bar")
+            span(class="icon-bar")
+          a(class="navbar-brand", href="/") go a movie
+        div(id="navbar", class="navbar-collapse collapse")
+          ul(class="nav navbar-nav navbar-right")
+            li
+              a(href="") Dashboard
+            li
+              a(href="") Settings
+            li(id="li_log_in")
+              a(href="/log_in") Log in
+            li(id="li_log_out", class="hidden")
+              a(href="") Log out
+          form(class="navbar-form navbar-right")
+            input(type="text", class="form-control", placeholder="Search...")
+
+    block content

@@ -1,0 +1,16 @@
+extends layout
+
+block script
+  script(type="text/javascript").
+    $(document).ready(function() {
+      var events = !{events};
+      for (var i = 0; i < events.length; ++i) {
+        $("#eventsUL").append($("<li>").text(events[i].description));
+      }
+    });
+
+block content
+  div(class="container")
+    div(class="row")
+      div(class="col-sm-12")
+        ul(id="eventsUL")
