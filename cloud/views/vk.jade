@@ -1,0 +1,27 @@
+extend layout
+
+block script
+  script(type="text/javascript").
+    $(document).ready(function () {
+      VK.init({
+        apiId: 4893325
+      });
+
+      function authInfo(response) {
+        if (response.session) {
+          alert('user: '+response.session.mid);
+        } else {
+          alert('not auth');
+        }
+      }
+
+      VK.Auth.getLoginStatus(authInfo);
+      VK.UI.button('login_button');
+
+      $("#login_button").click(function() {
+        VK.Auth.login(authInfo);
+      });
+    });
+
+block content
+  div(id="login_button")

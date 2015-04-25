@@ -14,6 +14,10 @@ app.get('/', function(req, res) {
   res.render('index', {});
 });
 
+app.get('/vk', function(req, res) {
+  res.render('vk', {});
+});
+
 app.get("/events", function(req, res) {
   Parse.Cloud.run("getEvents", {count: 10}, {
     success: function(result) {

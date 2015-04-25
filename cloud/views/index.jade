@@ -3,4 +3,30 @@ extends layout
 block script
   script(type="text/javascript").
     $(document).ready(function() {
+      VK.init({
+        apiId: 4893325
+      });
+
+      function authInfo(response) {
+        if (response.session) {
+          VK.Api.call('users.get', {uids: response.session.mid, fields: 'photo_50'}, function(r) { 
+            if(r.response) { 
+              alert('Привет, ' + r.response[0].first_name + " " + r.response[0].last_name); 
+              alert(r.response[0].photo_50);
+              $("#wrongCredentialsAlert").css("background-image", "url(" + r.response[0].photo_50 + ")");
+            }
+          }); 
+          //alert('user: '+ response.session.mid);
+        } else {
+          alert('not auth');
+        }
+      }
+
+      VK.Auth.getLoginStatus(authInfo);
     });
+
+block content
+  div(class="row")
+    div(class="col-sm-offset-3 col-sm-6 text-center", id="wrongCredentialsAlert")
+      h1
+        | qq
