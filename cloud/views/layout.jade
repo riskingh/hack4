@@ -30,21 +30,41 @@ html
       $(document).ready(function () {
         var hiddenForAnonymous = ["li_add_event", "li_log_out"];
         var hiddenForAuthorized = ["li_log_in"];
-        user = Parse.User.current();
-        if (user !== null) {
-          for (var i = 0; i < hiddenForAnonymous.length; ++i)
-            $("#" + hiddenForAnonymous[i]).removeClass("hidden");
-          for (var i = 0; i < hiddenForAuthorized.length; ++i)
-            $("#" + hiddenForAuthorized[i]).addClass("hidden");
+
+        VK.init({
+          apiId: 4893408
+        });
+
+        function authInfo(response) {
+          if (response.session) {
+            for (var i = 0; i < hiddenForAnonymous.length; ++i)
+              $("#" + hiddenForAnonymous[i]).removeClass("hidden");
+            for (var i = 0; i < hiddenForAuthorized.length; ++i)
+              $("#" + hiddenForAuthorized[i]).addClass("hidden");
+          }
         }
+      
+        VK.Auth.getLoginStatus(authInfo);
+        $("#li_log_in a").click(function() {
+          if ($(this).hasClass('hidden') )
+          {
+            return;
+          }
+          VK.Auth.login(function f(response) {
+            location.reload();
+          }, 1);
+        });
 
         $("#li_log_out a").click(function() {
-          Parse.User.logOut();
-          user = null;
-          location.reload();
+          if ($(this).hasClass('hidden') )
+          {
+            return;
+          }
+          VK.Auth.logout(function() {
+            location.reload();
+          });
         });
       });
-
     block script
 
     block title
@@ -64,7 +84,7 @@ html
             li(id="li_add_event", class="hidden")
               a(href="/add_event") ADD EVENT
             li(id="li_log_in")
-              a(href="/log_in") LOG IN
+              a(href="") SIGN IN WITH VK
             li(id="li_log_out", class="hidden")
               a(href="") LOG OUT
 
