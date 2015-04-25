@@ -29,6 +29,10 @@ app.get("/log_in", function(req, res) {
   res.render("log_in")
 });
 
+app.get("/add_event", function(req, res) {
+  res.render("add_event")
+});
+
 // // Example reading from the request query string of an HTTP get request.
 // app.get('/test', function(req, res) {
 //   // GET http://example.parseapp.com/test?message=hello

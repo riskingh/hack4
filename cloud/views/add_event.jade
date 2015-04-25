@@ -1,0 +1,59 @@
+extend layout
+
+block script
+  script(type="text/javascript").
+    $(document).ready(function () {
+      $('.datetimepicker').datetimepicker({
+          locale: 'ru',
+      });
+
+      var user = Parse.User.current();
+      if (!user) {
+          window.location.href = "/log_in";
+      }
+
+      $("#eventEditor").submit(function(event) {
+        event.preventDefault();
+        console.log($("#datetimepicker").data().date);
+      });
+
+    });
+
+
+block content
+  div(class="row")
+    div(class="col-sm-offset-2 col-sm-8")
+      form(id="eventEditor", class="form-horizontal")
+        div(class="form-group")
+          div(class="col-sm-2 col-xs-12")
+          div(class="col-sm-8 col-xs-12")
+            input(type="text", class="form-control", placeholder="short description", id="shortDescription")
+        div(class="form-group")
+          div(class="col-sm-2")
+          div(class="col-sm-8 col-xs-12")
+            textarea(class="form-control", placeholder="long description", rows="3")
+        div(class="form-group")
+          div(class="col-sm-2")
+          div(class="col-sm-8 col-xs-12")
+            div(class="input-group date datetimepicker", id="datetimepicker1", placeholder="date and time of start")
+              input(type="text", class="form-control")
+              span(class="input-group-addon")
+                span(class="glyphicon glyphicon-calendar")
+        div(class="form-group")
+          div(class="col-sm-2")
+          div(class="col-sm-8 col-xs-12")
+            div(class="input-group date datetimepicker", id="datetimepicker1", placeholder="date and time of end")
+              input(type="text", class="form-control")
+              span(class="input-group-addon")
+                span(class="glyphicon glyphicon-calendar")
+        div(class="form-group")
+          div(class="col-sm-2 col-xs-12")
+          div(class="col-sm-8 col-xs-12")
+            input(type="text", class="form-control", placeholder="place", id="place")
+        div(class="form-group")
+          div(class="col-sm-2")
+          div(class="col-sm-8 col-xs-12")
+            div(class="btn-group btn-group-justified")
+              div(class="btn-group")
+                button(type="submit", class="btn btn-default") Submit
+      
