@@ -14,7 +14,18 @@ block script
 
       $("#eventEditor").submit(function(event) {
         event.preventDefault();
-        console.log($("#datetimepicker").data().date);
+        var CEvent = Parse.Object.extend("Event");
+        var currentEvent = new CEvent();
+        currentEvent.set("host", user);
+        console.log($("#datetimepicker1").data().date);
+        console.log(new Date($("#datetimepicker1").data().date));
+        currentEvent.set("date", new Date($("#datetimepicker1").data().date));
+        currentEvent.set("description", $("#shortDescription").val());
+        currentEvent.set("place", $("#place").val());
+        //currentEvent.relation("members").add(user);
+        console.log($("#datetimepicker1").data().date);
+        console.log(currentEvent);
+        currentEvent.save();
       });
 
     });
