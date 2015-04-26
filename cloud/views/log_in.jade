@@ -9,9 +9,29 @@ block script
         var x = second[0].split('=');
         localStorage.setItem(x[0], x[1]);
         x = second[2].split('=');
-        localStorage.setItem(x[0], x[2]);
+        localStorage.setItem(x[0], x[1]);
+
+        var CStudent = Parse.Object.extend("Student");
+        var query = new Parse.Query(CStudent);
+        query.equalTo("vkId", localStorage.getItem("user_id"));
+        query.find({
+          success: function(results) {
+            if (results.length === 0) {
+              var newUser = new CStudent();
+              newUser.set("vkId", localStorage.getItem("user_id"));
+              newUser.save();
+            }
+            console.log(localStorage.getItem("user_id"));
+            console.log(results);
+            window.location.href="/add_event";
+          },
+          error: function(error) {
+            alert("FUCK!");
+            window.location.href="http://www.fuck.com/";
+          }
+        });
       }
-      window.location.href="/add_event";
+      
     });
     /*
            $("#signInForm").submit(function(event) {

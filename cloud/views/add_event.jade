@@ -10,20 +10,31 @@ block script
       $("#eventEditor").submit(function(event) {
         event.preventDefault();
         var CEvent = Parse.Object.extend("Event");
-        var currentEvent = new CEvent();
-        currentEvent.set("host", user);
-        console.log($("#datetimepicker1").data().date);
-        console.log(new Date(Date($("#datetimepicker1").data().date.toString())));
-        currentEvent.set("date", new Date(Date($("#datetimepicker1").data().date.toString())));
-        currentEvent.set("endDate", new Date(Date($("#datetimepicker2").data().date.toString())));
-        currentEvent.set("description", $("#shortDescription").val());
-        currentEvent.set("longDescription", $("#longDescription").val());
-        currentEvent.set("place", $("#place").val());
-        currentEvent.relation("members").add(user);
-        console.log($("#datetimepicker1").data().date);
-        console.log(currentEvent);
-        currentEvent.save();
-        window.location.href="/events"
+        var CStudent = Parse.Object.extend("Student");
+        var query = new Parse.Query(CStudent);
+        query.equalTo("vkId", localStorage.getItem("user_id"));
+        query.find({
+          success: function(results) {
+            var user = results[0];
+            var currentEvent = new CEvent();
+            currentEvent.set("host", user);
+            console.log($("#datetimepicker1").data().date);
+            console.log(new Date(Date($("#datetimepicker1").data().date.toString())));
+            currentEvent.set("date", new Date(Date($("#datetimepicker1").data().date.toString())));
+            currentEvent.set("endDate", new Date(Date($("#datetimepicker2").data().date.toString())));
+            currentEvent.set("description", $("#shortDescription").val());
+            currentEvent.set("longDescription", $("#longDescription").val());
+            currentEvent.set("place", $("#place").val());
+            currentEvent.relation("members").add(user);
+            console.log($("#datetimepicker1").data().date);
+            console.log(currentEvent);
+            currentEvent.save();
+            window.location.href="/events"
+          },
+          error: function(error) {
+            alert("FUCK!");
+            window.location.href="http://www.fuck.com/"
+          }
       });
 
     });
