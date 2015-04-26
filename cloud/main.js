@@ -20,7 +20,6 @@ Parse.Cloud.define("getEvents", function(request, response) {
         results[i].get("host").fetch({                          //- FETCH BEGIN
           success: function(result) {
             cnt--;
-            console.log(result);
             if (cnt <= 0) {
               var simpleResult = [], tmp;
               for (var j = 0; j < results.length; ++j) {
@@ -41,14 +40,12 @@ Parse.Cloud.define("getEvents", function(request, response) {
           },
           error: function(error) {
             cnt--;
-            console.log("something bad just happend");
             response.error("cant fetch hosts");
           }
         });                                                   //- FETCH END
       }
     },
     error: function(error) {
-      console.log("something bad just happend");
       response.error("cant get events");
     }
   });
@@ -60,10 +57,78 @@ Parse.Cloud.define("getEventById", function(request, response) {
   query.equalTo("objectId", request.params.id);
   query.find({
     success: function(result) {
-      response.success(result);
+      result = result[0];
+      console.log("$$$$$$ result $$$");
+      console.log(result);
+      result.get("host").fetch({
+        success: function(res) {
+          ans = {
+            "id": result.id,
+            "title": result.get("title"),
+            "desc": result.get("desc"),
+            "place": result.get("place"),
+            "date": result.get("date"),
+            "endDate": result.get("endDate"),
+            "host": result.get("host"),
+            "members": result.get("members")
+          };
+          response.success(ans);
+        },
+        error: function(error) {
+          console.log("WTF¿¿¿¿");
+          response.error("cant fetch host");
+        }
+      });
     },
     error: function(error) {
       response.error(error);
+    }
+  });
+});
+
+Parse.Cloud.define("subscribe", function(request, response) {
+  var eventId = request.params.event;
+  var studentId = request.params.student;
+
+  var Event = Parse.Object.extend("Event");
+  var qevent = new Parse.Query(Event);
+  qevent.equalTo("objectId", eventId);
+  console.log("1111111111111111111111111");
+  qevent.find({
+    success: function(event) {
+      console.log("2222222222222222222222222222");
+      var Student = Parse.Object.extend("Student");
+      var qstudent = new Parse.Query(Student);
+      qstudent.equalTo("objectId", studentId);
+      qstudent.find({
+        success: function(student) {
+          console.log("YES");
+          console.log(event);
+          console.log("NO");
+          console.log(student);
+          event = event[0];
+          student = student[0];
+          event.relation("members").add(student);
+          event.save(null, {
+            success: function(event) {
+              console.log("SUCCESS IN SAVING");
+              response.success({});
+            },
+            error: function(error) {
+              console.log("WTFFFF¿¿¿¿");
+              console.log(error);
+            }
+          });
+        },
+        error: function(error) {
+          console.log("ERROR")
+          response.error("eee");
+        }
+      });
+    },
+    error: function(error) {
+      console.log("err2")
+      response.error("error");
     }
   });
 });

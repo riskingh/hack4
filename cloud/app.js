@@ -40,10 +40,25 @@ app.get("/add_event", function(req, res) {
 app.get("/event", function(req, res) {
   Parse.Cloud.run("getEventById", {id: req.query.id}, {
     success: function(result) {
-      res.render("event", {event: JSON.stringify(result[0])});
+      res.render("event", {event: JSON.stringify(result)});
     },
     error: function(error) {
       res.render(error, {});
+    }
+  });
+});
+
+app.get("/error", function(req, res) {
+  res.render("error", {});
+});
+
+app.get("/event/subscribe", function(req, res) {
+  Parse.Cloud.run("subscribe", {event: req.query.event, student: req.query.id}, {
+    success: function(result) {
+      res.send("OKOKOKO");
+    },
+    error: function(error) {
+      res.render("error", {});
     }
   });
 });

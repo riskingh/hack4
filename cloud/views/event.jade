@@ -3,18 +3,36 @@ extends layout
 block script
   script(type="text/javascript").
     $(document).ready(function() {
-      event = !{event};
-      console.log("WTF¿");
-      console.log($("#eventTitle"));
-      $("#eventTitle").text(event.title);
-      $("#eventDesc").text(event.desc);
-      console.log(event.title);
-      console.log(event.desc);
-      console.log("OK");
+      var event = !{event};
+      sevent = null;
+
+      VK.Api.call('users.get', {uids: event.host.vkId, fields: 'photo_100'}, function(r) { 
+        if(r.response) {
+          sevent = {
+            id: event.id,
+            photo: $("<img>").attr("src", r.response[0].photo_100).attr("height", "100px").attr("width", "100px"),
+            host: $("<div>").attr("id", "hostInfo").text((r.response[0].first_name + " " + r.response[0].last_name).toUpperCase()),
+            place: $("<div>").attr("id", "placeInfo").text(event.place.toUpperCase()),
+            date: $("<div>").attr("id", "dateInfo").text(event.date.toString().slice(0, 16).replace("T", " ")),
+            title: $("<div>").addClass("col-sm-8").text(event.title),
+            desc: $("<div>").addClass("col-sm-6 col-sm-offset-3").attr("id", "descInfo").text(event.desc),
+          };
+          $("#imgInfo").append(sevent.photo);
+          $("#host-place-date").append(sevent.host).append(sevent.place).append(sevent.date);
+          console.log(event);
+          $("#subscribeButton").attr("href", "/event/subscribe?event=" + sevent.id + "&id=" + event.host.objectId);
+          //- $("#event-row-1").append(sevent.photo).append(sevent.host).append(sevent.place).append(sevent.date);
+          //- $("#event-row-2").append(sevent.desc);
+        }
+        else
+          window.location.href = "/error";
+      });
     });
 
 block content
-  div(class="row")
-    div(class="col-sm-10 col-sm-offset-1")
-      h2(id="eventTitle")
-      p(id="eventDesc")
+  div(id="event-row-1", class="row")
+    div(id="imgInfo", class="col-sm-2 col-sm-offset-1 round-img")
+    div(id="host-place-date", class="col-sm-7")
+    div(id="subscribeDiv", class="col-sm-1")
+      a(id="subscribeButton") subscribe
+  div(id="event-row-2", class="row")

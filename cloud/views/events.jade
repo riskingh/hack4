@@ -16,26 +16,27 @@ block script
         VK.Api.call('users.get', {uids: event.host.vkId, fields: 'photo_50'}, function(r) { 
           if(r.response) {
             --cnt;
-            console.log(r.response[0].photo_50);
             usersArray[index] = {
               id: event.id,
+              photo: $("<div>").addClass("col-sm-1").addClass("round-img").append($("<img>").attr("src", r.response[0].photo_50).attr("height", "50px").attr("width", "50px")),
               title: $("<div>").addClass("col-sm-8").text(event.title),
               host: $("<div>").addClass("col-sm-8 small").text(r.response[0].first_name + " " + r.response[0].last_name),
-              place: $("<div>").addClass("col-sm-4 small").text(event.place),
-              date: $("<div>").addClass("col-sm-4 small").text(event.date.toString().slice(0, 16).replace("T", " ")),
-            }
+              place: $("<div>").addClass("col-sm-3 small").text(event.place),
+              date: $("<div>").addClass("col-sm-3 small").text(event.date.toString().slice(0, 16).replace("T", " ")),
+            };
 
             if (cnt <= 0) { 
-              //console.log(usersArray);
               for (var i = 0; i < usersArray.length; ++i) {
                 var row = $("<div class='row event-row'>").attr("id", usersArray[i].id);
                 var col = $("<div class='event-col col-sm-10 col-sm-offset-1'>");
-                col.append(usersArray[i].title).append(usersArray[i].place).append(usersArray[i].host).append(usersArray[i].date);                
+                col.append(usersArray[i].photo).append(usersArray[i].title).append(usersArray[i].place).append(usersArray[i].host).append(usersArray[i].date);                
                 row.append(col);
                 $("#eventsContainer").append(row);
               }
             }
           }
+          else
+            window.location.href = "/error";
         }); 
       }
 
