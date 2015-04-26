@@ -7,11 +7,6 @@ block script
           locale: 'ru',
       });
 
-      var user = Parse.User.current();
-      if (!user) {
-          window.location.href = "/log_in";
-      }
-
       $("#eventEditor").submit(function(event) {
         event.preventDefault();
         var CEvent = Parse.Object.extend("Event");
@@ -36,8 +31,11 @@ block script
 
 block content
   div(class="row")
+    div(class="col-sm-offset-3 col-sm-6 alert alert-danger text-center", id="wrongCredentialsAlert")
+      h5
+        | Please, log in
     div(class="col-sm-offset-2 col-sm-8")
-      form(id="eventEditor", class="form-horizontal")
+      form(id="eventEditor", class="form-horizontal hidden")
         label(for="shortDescription", class="col-sm-3 control-label") SHORT DESCRIPTION
         div(class="form-group"): div(class="col-sm-7 col-xs-12")
           input(type="text", class="form-control", id="shortDescription")

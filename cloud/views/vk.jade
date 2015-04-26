@@ -2,27 +2,6 @@ extend layout
 
 block script
   script(type="text/javascript").
-    $(document).ready(function () {
-      VK.init({
-        apiId: 4893408
-      });
-
-      function authInfo(response) {
-        if (response.session) {
-          alert('user: '+response.session.mid);
-        } else {
-          alert('not auth');
-        }
-      }
-
-      VK.Auth.getLoginStatus(authInfo);
-      VK.UI.button('login_button');
-
-      $("#login_button").click(function() {
-        VK.Auth.login(authInfo);
-      });
+    $(document).ready(function() {
+      window.location.href=href="http://oauth.vk.com/authorize?client_id=4893325&scope=1&redirect_uri=goamovie.parseapp.com/log_in&display=popup&v=5.30&response_type=token";
     });
-
-block content
-  div(id="login_button")
-    
