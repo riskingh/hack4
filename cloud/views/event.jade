@@ -3,30 +3,75 @@ extends layout
 block script
   script(type="text/javascript").
     $(document).ready(function() {
-      var event = !{event};
-      sevent = null;
+      var createList = function(members) {}
 
-      VK.Api.call('users.get', {uids: event.host.vkId, fields: 'photo_100'}, function(r) { 
-        if(r.response) {
-          sevent = {
-            id: event.id,
-            photo: $("<img>").attr("src", r.response[0].photo_100).attr("height", "100px").attr("width", "100px"),
-            host: $("<div>").attr("id", "hostInfo").text((r.response[0].first_name + " " + r.response[0].last_name).toUpperCase()),
-            place: $("<div>").attr("id", "placeInfo").text(event.place.toUpperCase()),
-            date: $("<div>").attr("id", "dateInfo").text(event.date.toString().slice(0, 16).replace("T", " ")),
-            title: $("<div>").addClass("col-sm-8").text(event.title),
-            desc: $("<div>").addClass("col-sm-6 col-sm-offset-3").attr("id", "descInfo").text(event.desc),
-          };
-          $("#imgInfo").append(sevent.photo);
-          $("#host-place-date").append(sevent.host).append(sevent.place).append(sevent.date);
-          console.log(event);
-          $("#subscribeButton").attr("href", "/event/subscribe?event=" + sevent.id + "&id=" + event.host.objectId);
-          //- $("#event-row-1").append(sevent.photo).append(sevent.host).append(sevent.place).append(sevent.date);
-          //- $("#event-row-2").append(sevent.desc);
+      var Event = Parse.Object.extend("Event");
+      var equery =  new Parse.Query(Event);
+      equery.equalTo("objectId", "!{id}");
+      equery.find({
+        success: function(event) {
+          event = event[0];
+          event.get("host").fetch({
+            success: function(ehost) {
+              sevent = null;
+              ehost = event.get("host");
+
+              VK.Api.call('users.get', {uids: ehost.get("vkId"), fields: 'photo_100'}, function(r) { 
+                if(r.response) {
+                  sevent = {
+                    id: event.id,
+                    photo: $("<img>").attr("src", r.response[0].photo_100).attr("height", "100px").attr("width", "100px"),
+                    host: $("<div>").attr("id", "hostInfo").text((r.response[0].first_name + " " + r.response[0].last_name).toUpperCase()),
+                    place: $("<div>").attr("id", "placeInfo").text(event.get("place").toUpperCase()),
+                    date: $("<div>").attr("id", "dateInfo").text(event.get("date").toString().slice(0, 16).replace("T", " ")),
+                    title: $("<div>").addClass("col-sm-8").text(event.get("title")),
+                    desc: $("<div>").addClass("col-sm-6 col-sm-offset-3").attr("id", "descInfo").text(event.get("desc")),
+                  };
+                  $("#imgInfo").append(sevent.photo);
+                  $("#host-place-date").append(sevent.host).append(sevent.place).append(sevent.date);
+                  console.log(event);
+                  $("#subscribeButton").click(function() {
+                    window.location.href = "/event/subscribe?event=" + sevent.id + "&id=" + localStorage.getItem("user_id");
+                  });
+                  $("#unsubscribeButton").click(function() {
+                    window.location.href = "/event/unsubscribe?event=" + sevent.id + "&id=" + localStorage.getItem("user_id");
+                  });
+                  //- $("#event-row-1").append(sevent.photo).append(sevent.host).append(sevent.place).append(sevent.date);
+                  $("#event-row-2").append(sevent.desc);
+                }
+                else
+                  window.location.href = "/error";
+              });
+            
+              event.relation("members").query().find({
+                success: function(members) {
+                  var subscribed = false;
+                  for (var i = 0; i < members.length; ++i) {
+                    //- console.log(members.get("vkId"));
+                    //- console.log(localStorage.getItem("user_id"));
+                    if (localStorage.getItem("user_id") == members[i].get("vkId")) {
+                      subscribed = true;
+                      $("#subscribeButton").addClass("hidden");
+                      $("#unsubscribeButton").removeClass("hidden");
+                    }
+                  }
+                  createList(members);
+                },
+                error: function(error) {
+                  alert("error");
+                }
+              }); 
+            },
+            error: function(error) {
+              window.locaion.href = "/error";
+            }
+          }); 
+        },
+        error: function(error) {
+          window.locaion.href = "/error";
         }
-        else
-          window.location.href = "/error";
       });
+
     });
 
 block content
@@ -34,5 +79,6 @@ block content
     div(id="imgInfo", class="col-sm-2 col-sm-offset-1 round-img")
     div(id="host-place-date", class="col-sm-7")
     div(id="subscribeDiv", class="col-sm-1")
-      a(id="subscribeButton") subscribe
+      p(id="subscribeButton") I may attend
+      p(id="unsubscribeButton", class="hidden") Unsubscribe
   div(id="event-row-2", class="row")

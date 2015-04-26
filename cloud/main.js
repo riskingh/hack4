@@ -70,7 +70,7 @@ Parse.Cloud.define("getEventById", function(request, response) {
             "date": result.get("date"),
             "endDate": result.get("endDate"),
             "host": result.get("host"),
-            "members": result.get("members")
+            "members": result.relation("members")
           };
           response.success(ans);
         },
@@ -93,29 +93,60 @@ Parse.Cloud.define("subscribe", function(request, response) {
   var Event = Parse.Object.extend("Event");
   var qevent = new Parse.Query(Event);
   qevent.equalTo("objectId", eventId);
-  console.log("1111111111111111111111111");
   qevent.find({
     success: function(event) {
-      console.log("2222222222222222222222222222");
       var Student = Parse.Object.extend("Student");
       var qstudent = new Parse.Query(Student);
-      qstudent.equalTo("objectId", studentId);
+      qstudent.equalTo("vkId", studentId);
       qstudent.find({
         success: function(student) {
-          console.log("YES");
-          console.log(event);
-          console.log("NO");
-          console.log(student);
           event = event[0];
           student = student[0];
           event.relation("members").add(student);
           event.save(null, {
             success: function(event) {
-              console.log("SUCCESS IN SAVING");
               response.success({});
             },
-            error: function(error) {
-              console.log("WTFFFF¿¿¿¿");
+            error: function(event, error) {
+              console.log(error);
+            }
+          });
+        },
+        error: function(error) {
+          console.log("ERROR")
+          response.error("eee");
+        }
+      });
+    },
+    error: function(error) {
+      console.log("err2")
+      response.error("error");
+    }
+  });
+});
+
+Parse.Cloud.define("unsubscribe", function(request, response) {
+  var eventId = request.params.event;
+  var studentId = request.params.student;
+
+  var Event = Parse.Object.extend("Event");
+  var qevent = new Parse.Query(Event);
+  qevent.equalTo("objectId", eventId);
+  qevent.find({
+    success: function(event) {
+      var Student = Parse.Object.extend("Student");
+      var qstudent = new Parse.Query(Student);
+      qstudent.equalTo("vkId", studentId);
+      qstudent.find({
+        success: function(student) {
+          event = event[0];
+          student = student[0];
+          event.relation("members").remove(student);
+          event.save(null, {
+            success: function(event) {
+              response.success({});
+            },
+            error: function(event, error) {
               console.log(error);
             }
           });

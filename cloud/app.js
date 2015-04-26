@@ -38,14 +38,15 @@ app.get("/add_event", function(req, res) {
 });
 
 app.get("/event", function(req, res) {
-  Parse.Cloud.run("getEventById", {id: req.query.id}, {
-    success: function(result) {
-      res.render("event", {event: JSON.stringify(result)});
-    },
-    error: function(error) {
-      res.render(error, {});
-    }
-  });
+  // Parse.Cloud.run("getEventById", {id: req.query.id}, {
+  //   success: function(result) {
+  //     res.render("event", {event: JSON.stringify(result)});
+  //   },
+  //   error: function(error) {
+  //     res.render(error, {});
+  //   }
+  // });
+  res.render("event", {id: req.query.id});
 });
 
 app.get("/error", function(req, res) {
@@ -55,7 +56,18 @@ app.get("/error", function(req, res) {
 app.get("/event/subscribe", function(req, res) {
   Parse.Cloud.run("subscribe", {event: req.query.event, student: req.query.id}, {
     success: function(result) {
-      res.send("OKOKOKO");
+      res.redirect("/event?id=" + req.query.event);
+    },
+    error: function(error) {
+      res.render("error", {});
+    }
+  });
+});
+
+app.get("/event/unsubscribe", function(req, res) {
+  Parse.Cloud.run("unsubscribe", {event: req.query.event, student: req.query.id}, {
+    success: function(result) {
+      res.redirect("/event?id=" + req.query.event);
     },
     error: function(error) {
       res.render("error", {});
