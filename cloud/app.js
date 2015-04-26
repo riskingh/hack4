@@ -40,8 +40,6 @@ app.get("/add_event", function(req, res) {
 app.get("/event", function(req, res) {
   Parse.Cloud.run("getEventById", {id: req.query.id}, {
     success: function(result) {
-      console.log("XXXXXXXXXXXXX");
-      console.log(result[0]);
       res.render("event", {event: JSON.stringify(result[0])});
     },
     error: function(error) {

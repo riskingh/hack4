@@ -2,19 +2,24 @@ extends layout
 
 block script
   script(type="text/javascript").
+    $(document).on("click", ".event-row", function() {
+      window.location.href = "/event?id=" + $(this).attr("id");
+    });
+
     $(document).ready(function() {
       var eventToHtmlObject = function(event) {
-        var row = $("<div class='row event-row'>");
-        var col = $("<div class='event-col col-sm-10 col-sm-offset-1'>")
-        var description = $("<div>").addClass("col-sm-8").text(event.description.toUpperCase());
+        console.log(event);
+        var row = $("<div class='row event-row'>").attr("id", event.id);
+        var col = $("<div class='event-col col-sm-10 col-sm-offset-1'>");
+        var title = $("<div>").addClass("col-sm-8").text(event.title);
         //- var host = $("<div>").addClass("col-sm-8 small").text(event.host.username.toUpperCase());
         var host = $("<div>").addClass("col-sm-8 small").text("smb");
-        var place = $("<div>").addClass("col-sm-4 small").text(event.place.toUpperCase());
+        var place = $("<div>").addClass("col-sm-4 small").text(event.place);
 
         var dateStr = event.date.toString().slice(0, 16).replace("T", " ");
         var date = $("<div>").addClass("col-sm-4 small").text(dateStr);
 
-        col.append(description).append(place).append(host).append(date);
+        col.append(title).append(place).append(host).append(date);
         row.append(col);
 
         return row;

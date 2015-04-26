@@ -11,7 +11,7 @@ Parse.Cloud.define("getEvents", function(request, response) {
   var query = new Parse.Query(Event);
   query.find({
     success: function(results) {
-      results = results.slice(0, Math.min(results.length, request.params.count));
+      // results = results.slice(0, Math.min(results.length, request.params.count));
       answer = [];
       var cnt = results.length;
       if (cnt === 0)
@@ -25,14 +25,16 @@ Parse.Cloud.define("getEvents", function(request, response) {
               var simpleResult = [], tmp;
               for (var j = 0; j < results.length; ++j) {
                 tmp = {
-                  "description": results[j].get("description"),
-                  "longDescription": results[j].get("longDescription"),
+                  "id": results[j].id,
+                  "title": results[j].get("title"),
+                  "desc": results[j].get("desc"),
                   "place": results[j].get("place"),
                   "date": results[j].get("date"),
                   "endDate": results[j].get("endDate"),
                   "host": results[j].get("host"),
                   "members": results[j].get("members")
                 };
+                console.log(tmp.id);
                 simpleResult[j] = tmp;
               }
               response.success(simpleResult);
