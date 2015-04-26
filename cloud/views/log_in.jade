@@ -23,11 +23,10 @@ block script
             }
             console.log(localStorage.getItem("user_id"));
             console.log(results);
-            window.location.href="/add_event";
+            window.location.href="/events";
           },
           error: function(error) {
-            alert("FUCK!");
-            window.location.href="http://www.fuck.com/";
+            window.location.href = "/error";
           }
         });
       }

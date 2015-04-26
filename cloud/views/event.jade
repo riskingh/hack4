@@ -43,9 +43,9 @@ block script
                     photo: $("<img>").attr("src", r.response[0].photo_100).attr("height", "100px").attr("width", "100px"),
                     host: $("<div>").attr("id", "hostInfo").text((r.response[0].first_name + " " + r.response[0].last_name).toUpperCase()),
                     place: $("<div>").attr("id", "placeInfo").text(event.get("place").toUpperCase()),
-                    date: $("<div>").attr("id", "dateInfo").text(event.get("date").toString().slice(0, 16).replace("T", " ")),
-                    title: $("<div>").addClass("col-sm-8").text(event.get("title")),
-                    desc: $("<div>").addClass("col-sm-6 col-sm-offset-3").attr("id", "descInfo").text(event.get("desc")),
+                    date: $("<div>").attr("id", "dateInfo").text(event.get("date").toString().slice(0, 21)),
+                    title: $("<div>").addClass("col-sm-6 col-sm-offset-3").text(event.get("title")),
+                    desc: $("<div>").addClass("col-sm-6 col-sm-offset-3").attr("id", "descInfo").html(event.get("desc").replace('\n', "<br>")),
                   };
                   $("#imgInfo").append(sevent.photo);
                   $("#host-place-date").append(sevent.host).append(sevent.place).append(sevent.date);
@@ -57,6 +57,7 @@ block script
                     window.location.href = "/event/unsubscribe?event=" + sevent.id + "&id=" + localStorage.getItem("user_id");
                   });
                   //- $("#event-row-1").append(sevent.photo).append(sevent.host).append(sevent.place).append(sevent.date);
+                  $("#event-row-15").append(sevent.title);
                   $("#event-row-2").append(sevent.desc);
                 }
                 else
@@ -99,7 +100,12 @@ block content
     div(id="imgInfo", class="col-sm-2 col-sm-offset-1 round-img")
     div(id="host-place-date", class="col-sm-7")
     div(id="subscribeDiv", class="col-sm-1")
-      p(id="subscribeButton") I may attend
-      p(id="unsubscribeButton", class="hidden") Unsubscribe
+      div(class="btn-group", role="group")
+        button(id="subscribeButton", type="button", class="btn btn-default") I MAY ATTEND
+      div(class="btn-group", role="group")
+        button(id="unsubscribeButton", type="button", class="btn btn-default hidden") UNSUBSCRIBE
+      //- p(id="subscribeButton") I may attend
+      //- p(id="unsubscribeButton", class="hidden") Unsubscribe
+  div(id="event-row-15", class="row")
   div(id="event-row-2", class="row")
   div(id="event-row-3", class="row")
