@@ -14,6 +14,8 @@ Parse.Cloud.define("getEvents", function(request, response) {
       results = results.slice(0, Math.min(results.length, request.params.count));
       answer = [];
       var cnt = results.length;
+      if (cnt === 0)
+        response.success([]);
       for (var i = 0; i < results.length; ++i) {
         results[i].get("host").fetch({
           success: function(result) {
@@ -39,12 +41,14 @@ Parse.Cloud.define("getEvents", function(request, response) {
           error: function(error) {
             cnt--;
             console.log("something bad just happend");
+            response.error("cant fetch hosts");
           }
         });
       }
     },
     error: function(error) {
       console.log("something bad just happend");
+      response.error("cant get events");
     }
   });
 });
