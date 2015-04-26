@@ -9,11 +9,8 @@ block script
     $(document).ready(function() {
       var cnt;
       var usersArray;
-      var eventToHtmlObject = function(event, index) {
+      var eventsToHtmlObject = function(event, index) {
         console.log(event);
-        var row = $("<div class='row event-row'>").attr("id", event.id);
-        var col = $("<div class='event-col col-sm-10 col-sm-offset-1'>");
-        var title = $("<div>").addClass("col-sm-8").text(event.title);
         console.log(event.host.vkId);
 
         VK.Api.call('users.get', {uids: event.host.vkId}, function(r) { 
@@ -21,15 +18,19 @@ block script
             --cnt;
             
             usersArray[index] = {
-              host : $("<div>").addClass("col-sm-8 small").text(r.response[0].first_name + " " + r.response[0].last_name),
-              place : $("<div>").addClass("col-sm-4 small").text(event.place),
-              date : $("<div>").addClass("col-sm-4 small").text(event.date.toString().slice(0, 16).replace("T", " ")),
+              id: event.id,
+              title: $("<div>").addClass("col-sm-8").text(event.title),
+              host: $("<div>").addClass("col-sm-8 small").text(r.response[0].first_name + " " + r.response[0].last_name),
+              place: $("<div>").addClass("col-sm-4 small").text(event.place),
+              date: $("<div>").addClass("col-sm-4 small").text(event.date.toString().slice(0, 16).replace("T", " ")),
             }
 
             if (cnt <= 0) { 
               console.log(usersArray);
               for (var i = 0; i < usersArray.length; ++i) {
-                col.append(title).append(usersArray[i].place).append(usersArray[i].host).append(usersArray[i].date);                
+                var row = $("<div class='row event-row'>").attr("id", usersArray[i].id);
+                var col = $("<div class='event-col col-sm-10 col-sm-offset-1'>");
+                col.append(usersArray[i].title).append(usersArray[i].place).append(usersArray[i].host).append(usersArray[i].date);                
                 row.append(col);
                 $("#eventsContainer").append(row);
               }
@@ -53,7 +54,7 @@ block script
       cnt = events.length;
       usersArray = new Array(cnt);
       for (var i = 0; i < events.length; ++i)
-        eventToHtmlObject(events[i], i);
+        eventsToHtmlObject(events[i], i);
     });
 
 block content
