@@ -18,6 +18,11 @@ html
     script(type="text/javascript", src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js")
     script(type="text/javascript", src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js")
     script(type="text/javascript", src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/tests.js")
+
+    //VK openAPI
+
+    script(type="text/javascript", src="//vk.com/js/api/openapi.js?84")
+
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css")
     //- my CSS
     link(rel="stylesheet", href="main.css")
@@ -29,11 +34,11 @@ html
         var hiddenForAnonymous = ["li_add_event", "li_log_out", "eventEditor"];
         var hiddenForAuthorized = ["li_log_in", "wrongCredentialsAlert"];
 
-        
+        VK.init({apiId: 4893325});
+
         //- VK.init({
         //-   apiId: 4893325
         //- });
-        
 
         
         if (localStorage.getItem("access_token") !== null) {
