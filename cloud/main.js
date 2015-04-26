@@ -52,3 +52,17 @@ Parse.Cloud.define("getEvents", function(request, response) {
     }
   });
 });
+
+Parse.Cloud.define("getEventById", function(request, response) {
+  var Event = Parse.Object.extend("Event");
+  var query = new Parse.Query(Event);
+  query.equalTo("objectId", request.params.id);
+  query.find({
+    success: function(result) {
+      response.success(result);
+    },
+    error: function(error) {
+      response.error(error);
+    }
+  });
+});

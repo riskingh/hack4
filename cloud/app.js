@@ -30,11 +30,24 @@ app.get("/events", function(req, res) {
 });
 
 app.get("/log_in", function(req, res) {
-  res.render("log_in")
+  res.render("log_in", {});
 });
 
 app.get("/add_event", function(req, res) {
-  res.render("add_event")
+  res.render("add_event", {});
+});
+
+app.get("/event", function(req, res) {
+  Parse.Cloud.run("getEventById", {id: req.query.id}, {
+    success: function(result) {
+      console.log("XXXXXXXXXXXXX");
+      console.log(result[0]);
+      res.render("event", {event: JSON.stringify(result[0])});
+    },
+    error: function(error) {
+      res.render(error, {});
+    }
+  });
 });
 
 // // Example reading from the request query string of an HTTP get request.
