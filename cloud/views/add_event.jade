@@ -7,6 +7,21 @@ block script
           locale: 'ru',
       });
 
+      function getNormalDate(date) {
+        var day = date.slice(0, 2);
+        var month = parseInt(date.slice(3, 5)) - 1;
+        var year = date.slice(6, 10);
+        var hours = date.slice(11, 13);
+        var minutes = date.slice(14, 16);
+        var x = new Date();
+        x.setDate(day);
+        x.setMonth(month);
+        x.setYear(year);
+        x.setHours(hours);
+        x.setMinutes(minutes);
+        return x;
+      }
+
       $("#eventEditor").submit(function(event) {
         event.preventDefault();
         var CEvent = Parse.Object.extend("Event");
@@ -18,10 +33,9 @@ block script
             var user = results[0];
             var currentEvent = new CEvent();
             currentEvent.set("host", user);
-            console.log($("#datetimepicker1").data().date);
-            console.log(new Date(Date($("#datetimepicker1").data().date.toString())));
-            currentEvent.set("date", new Date(Date($("#datetimepicker1").data().date.toString())));
-            currentEvent.set("endDate", new Date(Date($("#datetimepicker2").data().date.toString())));
+            console.log(getNormalDate($("#datetimepicker1").data().date))
+            currentEvent.set("date", getNormalDate($("#datetimepicker1").data().date));
+            currentEvent.set("endDate", getNormalDate($("#datetimepicker2").data().date));
             currentEvent.set("description", $("#shortDescription").val());
             currentEvent.set("longDescription", $("#longDescription").val());
             currentEvent.set("place", $("#place").val());
