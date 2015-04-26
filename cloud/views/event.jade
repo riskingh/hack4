@@ -3,7 +3,27 @@ extends layout
 block script
   script(type="text/javascript").
     $(document).ready(function() {
-      var createList = function(members) {}
+      var createList = function(members) {
+        console.log("members");
+        console.log(members);
+        ids = [];
+        for (var i = 0; i < members.length; ++i)
+          ids[i] = members[i].get("vkId");
+        VK.Api.call('users.get', {uids: ids, fields: 'photo_50'}, function(r) {
+          if (r.response) {
+            for (var i = 0; i < r.response.length; ++i) {
+              console.log((r.response[i].first_name + " " + r.response[i].last_name).toUpperCase());
+              var photo = $("<div>").addClass("col-sm-1").addClass("col-sm-offset-3").addClass("round-img").append($("<img>").attr("src", r.response[i].photo_50).attr("height", "50px").attr("width", "50px"));
+              var name = $("<div>").addClass("col-sm-8 small").text((r.response[i].first_name + " " + r.response[i].last_name).toUpperCase());
+              var row = $("<div>").addClass("col-sm-12").addClass("member-row");
+              row.append(photo).append(name);
+              row.appendTo($("#event-row-3"));
+            }
+          }
+          else
+            window.location.href = "/error";
+        });
+      }
 
       var Event = Parse.Object.extend("Event");
       var equery =  new Parse.Query(Event);
@@ -82,3 +102,4 @@ block content
       p(id="subscribeButton") I may attend
       p(id="unsubscribeButton", class="hidden") Unsubscribe
   div(id="event-row-2", class="row")
+  div(id="event-row-3", class="row")
